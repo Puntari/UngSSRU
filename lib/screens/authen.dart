@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart' as prefix0;
+import 'package:ung_ssru/screens/register.dart';
 
 class Authen extends StatefulWidget {
   @override
@@ -12,9 +13,35 @@ class _AuthenState extends State<Authen> {
 
   // Method
 
+  Widget mySizeBox() {
+    return SizedBox(
+      width: 8.0,
+    );
+  }
+
+  Widget signUpButton() {
+    return RaisedButton(
+      color: Colors.green[200],
+      child: Text('Sign Up'),
+      onPressed: () {
+        print('You Click SignUp');
+
+        //Create Route
+        var registerRoute =
+            MaterialPageRoute(builder: (BuildContext context) => Register());
+            Navigator.of(context).push(registerRoute);
+      },
+    );
+  }
+
   Widget signInButton() {
     return RaisedButton(
-      child: Text('Sign In'), onPressed: (){},
+      color: Colors.green[300],
+      child: Text(
+        'Sign In',
+        style: TextStyle(color: Colors.blueGrey),
+      ),
+      onPressed: () {},
     );
   }
 
@@ -22,7 +49,15 @@ class _AuthenState extends State<Authen> {
     return Container(
       width: 220.0,
       child: Row(
-        children: <Widget>[signInButton(), signInButton()],
+        children: <Widget>[
+          Expanded(
+            child: signInButton(),
+          ),
+          mySizeBox(),
+          Expanded(
+            child: signUpButton(),
+          ),
+        ],
       ),
     );
   }
@@ -56,6 +91,7 @@ class _AuthenState extends State<Authen> {
       height: mySize,
       child: Image.asset(
         'images/logo.png',
+        
         fit: BoxFit.contain,
       ),
     );
@@ -63,11 +99,11 @@ class _AuthenState extends State<Authen> {
 
   Widget showText() {
     return Text(
-      'Yaaa Hoo',
+      'Welcome To My Hell',
       style: TextStyle(
-          fontSize: 45.0,
+          fontSize: 30.0,
           fontWeight: FontWeight.bold,
-          color: Colors.brown[800],
+          color: Colors.red[300],
           fontFamily: 'AmaticSC'),
     );
   }
@@ -77,6 +113,11 @@ class _AuthenState extends State<Authen> {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       body: Container(
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+          colors: [Colors.green, Colors.amber],
+          begin: Alignment.topCenter,
+        )),
         padding: EdgeInsets.only(top: 60.0),
         alignment: Alignment.topCenter,
         child: Column(
