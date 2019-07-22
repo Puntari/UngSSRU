@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart' as prefix0;
+import 'package:ung_ssru/screens/my_service.dart';
 import 'package:ung_ssru/screens/register.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Authen extends StatefulWidget {
   @override
@@ -10,8 +12,28 @@ class Authen extends StatefulWidget {
 class _AuthenState extends State<Authen> {
   // Explicit
   double mySize = 180.0;
-
+  FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   // Method
+
+  @override
+  void initState() {
+    super.initState();
+    checkStatus();
+  }
+
+  Future<void> checkStatus() async {
+    FirebaseUser firebaseUser =
+        await firebaseAuth.currentUser(); //เก็บ data คนที่ล็อคอิน
+    if (firebaseUser != null) {//ไม่เท่ากับความว่าง = ล็อคอิน
+      moveToService();
+    }
+  } //เทรด
+
+  void moveToService() {
+    var serviceRoute =
+        MaterialPageRoute(builder: (BuildContext context) => MyService());
+        Navigator.of(context).pushAndRemoveUntil(serviceRoute, (Route<dynamic> route) => false);
+  }
 
   Widget mySizeBox() {
     return SizedBox(
@@ -29,7 +51,7 @@ class _AuthenState extends State<Authen> {
         //Create Route
         var registerRoute =
             MaterialPageRoute(builder: (BuildContext context) => Register());
-            Navigator.of(context).push(registerRoute);
+        Navigator.of(context).push(registerRoute);
       },
     );
   }
@@ -91,7 +113,6 @@ class _AuthenState extends State<Authen> {
       height: mySize,
       child: Image.asset(
         'images/logo.png',
-        
         fit: BoxFit.contain,
       ),
     );
