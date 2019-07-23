@@ -2,7 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart' as prefix0; //3
+import 'package:flutter/material.dart' as prefix0;
+import 'package:ung_ssru/screens/my_map.dart'; //3
 
 class MyService extends StatefulWidget {
   @override
@@ -103,7 +104,7 @@ class _MyServiceState extends State<MyService> {
       appBar: AppBar(
         title: Text('My Service'),
       ),
-      body: Text('body'),
+      body:MyMap(),
       drawer: showDrawMenu(),
     );
   }
