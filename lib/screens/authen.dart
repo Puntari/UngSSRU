@@ -13,6 +13,10 @@ class _AuthenState extends State<Authen> {
   // Explicit
   double mySize = 180.0;
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  final formKey = GlobalKey<FormState>();
+  String emailString = '', passwordString = '';
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+
   // Method
 
   @override
@@ -24,7 +28,8 @@ class _AuthenState extends State<Authen> {
   Future<void> checkStatus() async {
     FirebaseUser firebaseUser =
         await firebaseAuth.currentUser(); //เก็บ data คนที่ล็อคอิน
-    if (firebaseUser != null) {//ไม่เท่ากับความว่าง = ล็อคอิน
+    if (firebaseUser != null) {
+      //ไม่เท่ากับความว่าง = ล็อคอิน
       moveToService();
     }
   } //เทรด
@@ -32,7 +37,8 @@ class _AuthenState extends State<Authen> {
   void moveToService() {
     var serviceRoute =
         MaterialPageRoute(builder: (BuildContext context) => MyService());
-        Navigator.of(context).pushAndRemoveUntil(serviceRoute, (Route<dynamic> route) => false);
+    Navigator.of(context)
+        .pushAndRemoveUntil(serviceRoute, (Route<dynamic> route) => false);
   }
 
   Widget mySizeBox() {
@@ -63,8 +69,26 @@ class _AuthenState extends State<Authen> {
         'Sign In',
         style: TextStyle(color: Colors.blueGrey),
       ),
-      onPressed: () {},
+      onPressed: () {
+        formKey.currentState.save();
+        checkAuthen();
+      },
     );
+  }
+
+  Future<void> checkAuthen() async {
+    print('email =$emailString, password =$passwordString');
+    await firebaseAuth
+        .signInWithEmailAndPassword(
+            email: emailString, password: passwordString)
+        .then((response) {
+      print('Authen Success');
+      moveToService();
+    }).catchError((response) {
+      String errorString = response.message;
+      print('error =$errorString');
+      myShowSnackBar(errorString); //คอรmyshowsnackBar
+    });
   }
 
   Widget myButton() {
@@ -88,10 +112,14 @@ class _AuthenState extends State<Authen> {
     return Container(
       width: 220.0,
       child: TextFormField(
+        obscureText: true,
         decoration: InputDecoration(
           labelText: 'Password :',
           hintText: 'More 6 Charactor',
         ),
+        onSaved: (String value) {
+          passwordString = value;
+        },
       ),
     );
   }
@@ -101,8 +129,13 @@ class _AuthenState extends State<Authen> {
       width: 220.0,
       child: TextFormField(
         keyboardType: TextInputType.emailAddress,
-        decoration:
-            InputDecoration(labelText: 'Email :', hintText: 'you@email.com'),
+        decoration: InputDecoration(
+          labelText: 'Email :',
+          hintText: 'you@email.com',
+        ),
+        onSaved: (String value) {
+          emailString = value;
+        },
       ),
     );
   }
@@ -129,9 +162,24 @@ class _AuthenState extends State<Authen> {
     );
   }
 
+  void myShowSnackBar(String messageString) {
+    SnackBar snackBar = SnackBar(
+      content: Text(messageString),
+      backgroundColor: Colors.yellow,
+      duration: Duration(seconds: 8), //เวลาขึ้นแถบล่าง
+      action: SnackBarAction(
+        label: 'Close',
+        onPressed: () {},
+        textColor: Colors.green,
+      ),
+    );
+    scaffoldKey.currentState.showSnackBar(snackBar);
+  } //แถบดำล่างที่กรอกผิด //คอรmyshowsnackBar
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       resizeToAvoidBottomPadding: false,
       body: Container(
         decoration: BoxDecoration(
@@ -141,14 +189,17 @@ class _AuthenState extends State<Authen> {
         )),
         padding: EdgeInsets.only(top: 60.0),
         alignment: Alignment.topCenter,
-        child: Column(
-          children: <Widget>[
-            showLogo(),
-            showText(),
-            emailText(),
-            passwordText(),
-            myButton(),
-          ],
+        child: Form(
+          key: formKey,
+          child: Column(
+            children: <Widget>[
+              showLogo(),
+              showText(),
+              emailText(),
+              passwordText(),
+              myButton(),
+            ],
+          ),
         ),
       ),
     );
