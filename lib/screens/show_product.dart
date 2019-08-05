@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ung_ssru/models/product_model.dart';
+import 'package:ung_ssru/models/product_model.dart' as prefix0;
 
 class ShowProduct extends StatefulWidget {
   @override
@@ -9,38 +11,54 @@ class ShowProduct extends StatefulWidget {
 }
 
 class _ShowProductState extends State<ShowProduct> {
-
 // Explicit
-Firestore firestore = Firestore.instance;
-StreamSubscription<QuerySnapshot> subscription;    
-List<DocumentSnapshot> snapshots;
-
+  Firestore fireStore = Firestore.instance;
+  StreamSubscription<QuerySnapshot> subscription;
+  List<DocumentSnapshot> snapshots;
+  List<ProductModel> productModels = [];
 
 // Method
- @override
+  @override
   void initState() {
     super.initState();
     readFireStore();
   }
 
-  Future<void> readFireStore()async{
-    CollectionReference collectionReference = firestore.collection('Product');
-    subscription = await collectionReference.snapshots().listen((dataSnapshop){
+  Future<void> readFireStore() async {
+    CollectionReference collectionReference = fireStore.collection('Product');
+    subscription = await collectionReference.snapshots().listen((dataSnapshop) {
       snapshots = dataSnapshop.documents;
-      for (var snapshot in snapshots) {
 
+      for (var snapshot in snapshots) {
         String nameProduct = snapshot.data['Name'];
         print('nameProduct = $nameProduct');
-        
+
+        String detailProduct = snapshot.data['Detial'];
+        String urlproduct = snapshot.data['Url'];
+
+        ProductModel productModel =
+            ProductModel(nameProduct, detailProduct, urlproduct);
+
+        setState(() {
+          productModels.add(productModel);
+        });
       }
     });
+  }
 
+  Widget showListProduct() {
+    return ListView.builder(
+      itemCount: productModels.length,
+      itemBuilder: (BuildContext context, int index) {
+        return Text(productModels[index].name);
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Text('This is ShowProduct'),
+      child: showListProduct(),
     );
   }
 }
