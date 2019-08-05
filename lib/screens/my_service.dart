@@ -3,7 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart' as prefix0;
-import 'package:ung_ssru/screens/my_map.dart'; //3
+import 'package:ung_ssru/screens/my_map.dart';
+import 'package:ung_ssru/screens/show_product.dart'; //3
 
 class MyService extends StatefulWidget {
   @override
@@ -14,8 +15,51 @@ class _MyServiceState extends State<MyService> {
 //Explicit
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   String namestring = '';
+  Widget myWidget = ShowProduct();
 
 //Method
+
+  Widget menuShowInfo() {
+    return ListTile(
+      leading: Icon(
+        Icons.info,
+        size: 35.0,
+        color: Colors.pinkAccent,
+      ),
+      title: Text(
+        'Show Info',
+        style: TextStyle(fontSize: 14.0),
+      ),
+    );
+  }
+
+  Widget menuShowMap() {
+    return ListTile(
+      leading: Icon(
+        Icons.map,
+        size: 35.0,
+        color: Colors.blue,
+      ),
+      title: Text(
+        'Show Map',
+        style: TextStyle(fontSize: 14.0),
+      ),
+    );
+  }
+
+  Widget menuShowProduct() {
+    return ListTile(
+      leading: Icon(
+        Icons.show_chart,
+        size: 35.0,color: Colors.lightBlue,
+      ),
+      title: Text(
+        'Show Product',
+        style: TextStyle(fontSize: 14.0),
+      ),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -35,6 +79,9 @@ class _MyServiceState extends State<MyService> {
       child: ListView(
         children: <Widget>[
           headMenu(),
+          menuShowProduct(),
+          menuShowMap(),
+          menuShowInfo(),
           singOutAnExit(),
         ],
       ),
@@ -43,28 +90,26 @@ class _MyServiceState extends State<MyService> {
 
   Widget singOutAnExit() {
     return ListTile(
-      leading: Icon(
-        Icons.exit_to_app,
-        size: 35.0,
-        color: Colors.red,
-      ),
-      title: Text(
-        'Sign Out & Exit',
-        style: TextStyle(color: Colors.red, fontSize: 18.0),
-      ),onTap: (){
-        mySignOut(); //คอร
-
-      }//ถ้าคลิกsign out ทำงานใน ontap,
-    );
+        leading: Icon(
+          Icons.exit_to_app,
+          size: 35.0,
+          color: Colors.red,
+        ),
+        title: Text(
+          'Sign Out & Exit',
+          style: TextStyle(color: Colors.red, fontSize: 18.0),
+        ),
+        onTap: () {
+          mySignOut(); //คอร
+        } //ถ้าคลิกsign out ทำงานใน ontap,
+        );
   }
 
-  Future<void> mySignOut()async{
-
-    await firebaseAuth.signOut().then((response){
+  Future<void> mySignOut() async {
+    await firebaseAuth.signOut().then((response) {
       exit(0);
     });
-
-  }//สร้าง-->คอร
+  } //สร้าง-->คอร
 
   Widget headMenu() {
     return DrawerHeader(
@@ -104,7 +149,7 @@ class _MyServiceState extends State<MyService> {
       appBar: AppBar(
         title: Text('My Service'),
       ),
-      body:MyMap(),
+      body: myWidget,
       drawer: showDrawMenu(),
     );
   }
