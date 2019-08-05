@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart' as prefix0;
 import 'package:ung_ssru/screens/my_map.dart';
+import 'package:ung_ssru/screens/show_info.dart';
 import 'package:ung_ssru/screens/show_product.dart'; //3
 
 class MyService extends StatefulWidget {
@@ -19,17 +20,29 @@ class _MyServiceState extends State<MyService> {
 
 //Method
 
+  Widget myDivider() {
+    return Divider(
+      height: 5.0,
+      color: Colors.grey,
+    );
+  } //เส้นขั้น
+
   Widget menuShowInfo() {
     return ListTile(
       leading: Icon(
         Icons.info,
         size: 35.0,
-        color: Colors.pinkAccent,
+        color: Colors.lightBlue,
       ),
       title: Text(
         'Show Info',
         style: TextStyle(fontSize: 14.0),
-      ),
+      ),onTap: (){
+        setState(() {
+         myWidget = ShowInfo();
+         Navigator.of(context).pop();
+        });
+      },
     );
   }
 
@@ -38,12 +51,17 @@ class _MyServiceState extends State<MyService> {
       leading: Icon(
         Icons.map,
         size: 35.0,
-        color: Colors.blue,
+        color: Colors.lightBlue,
       ),
       title: Text(
         'Show Map',
         style: TextStyle(fontSize: 14.0),
-      ),
+      ),onTap: (){
+        setState(() {
+         myWidget = MyMap();
+         Navigator.of(context).pop();
+        });
+      },
     );
   }
 
@@ -51,12 +69,18 @@ class _MyServiceState extends State<MyService> {
     return ListTile(
       leading: Icon(
         Icons.show_chart,
-        size: 35.0,color: Colors.lightBlue,
+        size: 35.0,
+        color: Colors.lightBlue,
       ),
       title: Text(
         'Show Product',
         style: TextStyle(fontSize: 14.0),
-      ),
+      ),onTap: (){
+        setState(() {
+         myWidget = ShowProduct();
+         Navigator.of(context).pop();
+        });
+      },
     );
   }
 
@@ -80,8 +104,11 @@ class _MyServiceState extends State<MyService> {
         children: <Widget>[
           headMenu(),
           menuShowProduct(),
+          myDivider(),
           menuShowMap(),
+          myDivider(),
           menuShowInfo(),
+          myDivider(),
           singOutAnExit(),
         ],
       ),
