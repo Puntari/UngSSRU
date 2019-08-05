@@ -191,7 +191,7 @@ class _AuthenState extends State<Authen> {
         alignment: Alignment.topCenter,
         child: Form(
           key: formKey,
-          child: Column(
+          child: Column(mainAxisAlignment: MainAxisAlignment.start, //เลือกว่าให้หน้าแรกอยู่ บนกลาง ล่าง 
             children: <Widget>[
               showLogo(),
               showText(),
