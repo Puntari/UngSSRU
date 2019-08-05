@@ -64,7 +64,7 @@ class _RegisterState extends State<Register> {
   }
 
   Widget passwordText() {
-    return TextFormField(
+    return TextFormField(obscureText: true,
       decoration: InputDecoration(
         labelText: 'Password:',
         labelStyle: TextStyle(color: Colors.green),
