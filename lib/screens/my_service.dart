@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart' as prefix0;
 import 'package:ung_ssru/screens/my_map.dart';
+import 'package:ung_ssru/screens/qr_reader.dart';
 import 'package:ung_ssru/screens/show_info.dart';
 import 'package:ung_ssru/screens/show_product.dart'; //3
 
@@ -27,7 +28,25 @@ class _MyServiceState extends State<MyService> {
     );
   } //เส้นขั้น
 
-
+  Widget menuQRcode() {
+    return ListTile(
+      leading: Icon(
+        Icons.android,
+        size: 36.0,
+        color: Colors.green,
+      ),
+      title: Text(
+        'QR code Code Reader',
+        style: TextStyle(fontSize: 16.0),
+      ),
+      onTap: () {
+        setState(() {
+          myWidget = Qrcode();
+          Navigator.of(context).pop();
+        });
+      },
+    );
+  }
 
   Widget menuShowInfo() {
     return ListTile(
@@ -39,10 +58,11 @@ class _MyServiceState extends State<MyService> {
       title: Text(
         'Show Info',
         style: TextStyle(fontSize: 14.0),
-      ),onTap: (){
+      ),
+      onTap: () {
         setState(() {
-         myWidget = ShowInfo();
-         Navigator.of(context).pop();
+          myWidget = ShowInfo();
+          Navigator.of(context).pop();
         });
       },
     );
@@ -58,10 +78,11 @@ class _MyServiceState extends State<MyService> {
       title: Text(
         'Show Map',
         style: TextStyle(fontSize: 14.0),
-      ),onTap: (){
+      ),
+      onTap: () {
         setState(() {
-         myWidget = MyMap();
-         Navigator.of(context).pop();
+          myWidget = MyMap();
+          Navigator.of(context).pop();
         });
       },
     );
@@ -77,10 +98,11 @@ class _MyServiceState extends State<MyService> {
       title: Text(
         'Show Product',
         style: TextStyle(fontSize: 14.0),
-      ),onTap: (){
+      ),
+      onTap: () {
         setState(() {
-         myWidget = ShowProduct();
-         Navigator.of(context).pop();
+          myWidget = ShowProduct();
+          Navigator.of(context).pop();
         });
       },
     );
@@ -110,6 +132,8 @@ class _MyServiceState extends State<MyService> {
           menuShowMap(),
           myDivider(),
           menuShowInfo(),
+          myDivider(),
+          menuQRcode(),
           myDivider(),
           singOutAnExit(),
         ],
