@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart' as prefix1;
 import 'package:ung_ssru/models/product_model.dart';
 import 'package:ung_ssru/models/product_model.dart' as prefix0;
+import 'package:ung_ssru/screens/show_detail.dart';
 
 class ShowProduct extends StatefulWidget {
   @override
@@ -91,19 +92,33 @@ class _ShowProductState extends State<ShowProduct> {
       child: ListView.builder(
         itemCount: productModels.length,
         itemBuilder: (BuildContext context, int index) {
-          return Container(decoration: index %2 == 0 
-          ? BoxDecoration(color: Colors.orange[50])
-          :BoxDecoration(color: Colors.orange[200]),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                showImage(index),
-                SizedBox(
-                  width: 8.0,
-                ),
-                showText(index),
-              ],
+          return GestureDetector(
+            child: Container(
+              decoration: index % 2 == 0
+                  ? BoxDecoration(color: Colors.orange[50])
+                  : BoxDecoration(color: Colors.orange[200]),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  showImage(index),
+                  SizedBox(
+                    width: 8.0,
+                  ),
+                  showText(index),
+                ],
+              ),
             ),
+            onTap: () {
+              print('you click index = $index');
+
+              var showDetailRoute = MaterialPageRoute(
+                  builder: (BuildContext context) => ShowDetail(
+                        productModel: productModels[index],
+                      ));///click ที่รูปแล้วไปอีกหน้า
+              Navigator.of(context).push(showDetailRoute);
+
+              ///click ที่รูปแล้วไปอีกหน้า
+            },
           );
         },
       ),
